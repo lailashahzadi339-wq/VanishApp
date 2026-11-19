@@ -1,56 +1,163 @@
-# Welcome to your Expo app 👋
+# VANISH – Class Messaging App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 1. Project Overview
 
-## Get started
+VANISH is a class-based messaging application developed using React Native and Expo. It allows students to communicate with other members of the same class.
 
-1. Install dependencies
+The main purpose of VANISH is to provide temporary messaging. Messages disappear approximately 30 seconds after successful delivery to the recipient.
 
-   ```bash
-   npm install
-   ```
+## 2. Main Features
 
-2. Start the app
+- **Join a Class:** Students can join a class using their name, relay server address, and class code.
+- **Send Messages:** Students can send text messages to other members of their class.
+- **Temporary Messages:** Messages disappear approximately 30 seconds after delivery.
+- **Delivery-Based Expiry:** The countdown starts when the recipient receives the message, not when the sender sends it.
+- **Offline Message Delivery:** Messages can be received when a student reconnects to the server.
+- **Class Members:** Students can view the members of their class.
+- **Duplicate Prevention:** The application prevents the same message from appearing multiple times.
+- **Message Validation:** Empty messages and messages exceeding the character limit are rejected.
+- **Modern Interface:** The application uses a dark-blue user interface.
 
-   ```bash
-   npx expo start
-   ```
+## 3. Technologies Used
 
-In the output, you'll find options to open the app in a
+### Frontend
+- React Native
+- Expo
+- TypeScript
+- Expo Router
+- AsyncStorage
+- Expo Crypto
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Backend
+- Python
+- FastAPI
+- SQLite
+- Uvicorn
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 4. Project Structure
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```text
+VanishApp/
+│
+├── src/
+│   └── app/
+│       ├── index.tsx
+│       └── chat.tsx
+│
+├── components/
+│
+├── backend/
+│
+├── package.json
+└── README.md
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+## 5. How to Run the Application
 
-### Other setup steps
+### Step 1: Start the Backend
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Open PowerShell and navigate to the backend server folder:
 
-## Learn more
+```powershell
+cd "$HOME\Documents\Semester 5\Mobile Application Development\field-sync\field-sync\server"
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Start the FastAPI server:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```powershell
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
+```
 
-## Join the community
+The backend will run on port 8000.
 
-Join our community of developers creating universal apps.
+Keep this terminal open while using the application.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Step 2: Start the Frontend
+
+Open another terminal in VS Code.
+
+Navigate to the VANISH project:
+
+```powershell
+cd "$HOME\Desktop\VanishApp"
+```
+
+Install the project dependencies:
+
+```powershell
+npm install
+```
+
+Start Expo:
+
+```powershell
+npx.cmd expo start
+```
+
+Scan the QR code using Expo Go to open the application.
+
+### Step 3: Connect the Phones
+
+1. Connect both phones and the laptop to the same Wi-Fi network.
+2. Enter the laptop's local IP address and backend port in the relay server field.
+3. Enter the class code.
+4. Enter a student name.
+5. Join the class on both phones.
+
+Example relay address:
+
+```text
+wss://vanish-backend-mcls.onrender.com
+```
+
+The IP address may be different on another network.
+
+## 6. Message Expiry
+
+VANISH uses delivery-based message expiry.
+
+1. The sender sends a message.
+2. The backend creates a delivery record for the recipient.
+3. When the recipient receives and acknowledges the message, the backend records the delivery time.
+4. The backend calculates the expiry time as 30 seconds after delivery.
+5. The message disappears after its expiry time.
+
+This approach keeps message expiry synchronized with actual delivery rather than the sender's sending time.
+
+## 7. Testing
+
+The following tests were performed during development:
+
+- Both phones successfully joined the same class.
+- Messages were sent and received between two phones.
+- Messages disappeared after approximately 30 seconds from delivery.
+- Offline messages were delivered after reconnecting.
+- Countdown behavior was checked after backgrounding and reopening the app.
+- Expired messages did not reappear after restarting the application.
+- Duplicate messages were prevented.
+- Message ordering was checked.
+- Class member listing was tested.
+- Unauthorized requests were rejected by the backend.
+- Message length validation was tested.
+- Duplicate message submissions were tested.
+- TypeScript compilation completed without errors.
+
+## 8. Security and Validation
+
+VANISH includes backend validation and access checks.
+
+- Class membership is checked before accessing class messages.
+- Unauthorized requests are rejected.
+- Empty messages are not accepted.
+- Messages longer than 2000 characters are rejected.
+- Duplicate message submissions are handled using unique client message IDs.
+- Delivery acknowledgements are checked against the correct recipient.
+- API requests are validated by the backend.
+
+## 9. Project Purpose
+
+VANISH was developed as a university Mobile Application Development project to demonstrate mobile application development, client-server communication, message synchronization, temporary messaging, validation, and basic application security.
+
+## 10. Conclusion
+
+VANISH demonstrates how a mobile messaging application can provide class-based communication with delivery-based message expiry. The project combines a React Native frontend with a Python FastAPI backend and was tested using two mobile devices.
