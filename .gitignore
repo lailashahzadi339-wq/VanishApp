@@ -41,3 +41,9 @@ example
 # generated native folders
 /ios
 /android
+
+# Unnecessary local folders
+.idea/
+/VANISH/
+/VanishApp/
+/src/app/index-backup.txt
